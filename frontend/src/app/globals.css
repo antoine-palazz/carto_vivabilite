@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base colors */
+    --color-bg-primary: 10 15 26;
+    --color-bg-secondary: 17 24 39;
+    --color-bg-tertiary: 26 35 50;
+    --color-bg-elevated: 31 41 55;
+    
+    --color-text-primary: 248 250 252;
+    --color-text-secondary: 148 163 184;
+    --color-text-muted: 100 116 139;
+    --color-text-accent: 56 189 248;
+    
+    --color-accent-primary: 59 130 246;
+    --color-accent-secondary: 99 102 241;
+    
+    --color-border-subtle: 30 41 59;
+    --color-border-default: 51 65 85;
+    
+    /* Map specific */
+    --map-tile-filter: brightness(0.6) contrast(1.2) saturate(0.3) hue-rotate(180deg);
+  }
+
+  * {
+    @apply border-carte-border-subtle;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-carte-bg-primary text-carte-text-primary;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-carte-bg-secondary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-carte-border-default rounded-full transition-colors;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-carte-border-strong;
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.carte.border.default') theme('colors.carte.bg.secondary');
+  }
+}
+
+@layer components {
+  /* Score badge variants */
+  .score-badge {
+    @apply inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .score-excellent {
+    @apply bg-carte-score-excellent/20 text-carte-score-excellent;
+  }
+
+  .score-good {
+    @apply bg-carte-score-good/20 text-carte-score-good;
+  }
+
+  .score-average {
+    @apply bg-carte-score-average/20 text-carte-score-average;
+  }
+
+  .score-poor {
+    @apply bg-carte-score-poor/20 text-carte-score-poor;
+  }
+
+  .score-bad {
+    @apply bg-carte-score-bad/20 text-carte-score-bad;
+  }
+
+  /* Glass morphism panel */
+  .glass-panel {
+    @apply bg-carte-bg-secondary/80 backdrop-blur-xl border border-carte-border-subtle rounded-xl shadow-lg;
+  }
+
+  /* Glow effect on focus */
+  .focus-glow {
+    @apply focus:outline-none focus:ring-2 focus:ring-carte-accent-primary/50 focus:ring-offset-2 focus:ring-offset-carte-bg-primary;
+  }
+
+  /* Input base styles */
+  .input-base {
+    @apply w-full px-4 py-2.5 bg-carte-bg-tertiary border border-carte-border-default rounded-lg 
+           text-carte-text-primary placeholder:text-carte-text-muted
+           transition-all duration-200
+           hover:border-carte-border-strong
+           focus:outline-none focus:border-carte-accent-primary focus:ring-1 focus:ring-carte-accent-primary/30;
+  }
+
+  /* Button variants */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 
+           bg-carte-accent-primary text-white font-medium rounded-lg
+           transition-all duration-200
+           hover:bg-carte-accent-primary/90 hover:shadow-glow
+           focus:outline-none focus:ring-2 focus:ring-carte-accent-primary/50 focus:ring-offset-2 focus:ring-offset-carte-bg-primary
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 
+           bg-carte-bg-tertiary text-carte-text-primary font-medium rounded-lg
+           border border-carte-border-default
+           transition-all duration-200
+           hover:bg-carte-bg-elevated hover:border-carte-border-strong
+           focus:outline-none focus:ring-2 focus:ring-carte-accent-primary/50 focus:ring-offset-2 focus:ring-offset-carte-bg-primary
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 
+           text-carte-text-secondary font-medium rounded-lg
+           transition-all duration-200
+           hover:bg-carte-bg-tertiary hover:text-carte-text-primary
+           focus:outline-none focus:ring-2 focus:ring-carte-accent-primary/50
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar but allow scroll */
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-carte-accent-primary to-carte-accent-secondary bg-clip-text text-transparent;
+  }
+
+  /* Shimmer effect */
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+
+  .shimmer::after {
+    content: '';
+    @apply absolute inset-0 bg-shimmer-gradient bg-[length:200%_100%] animate-shimmer;
+  }
+
+  /* Map overlay gradient */
+  .map-gradient-overlay {
+    background: linear-gradient(
+      to right,
+      rgba(10, 15, 26, 0.95) 0%,
+      rgba(10, 15, 26, 0.8) 10%,
+      rgba(10, 15, 26, 0) 30%
+    );
+  }
+
+  /* Mobile bottom sheet gradient */
+  .bottom-sheet-gradient {
+    background: linear-gradient(
+      to top,
+      rgba(10, 15, 26, 0.98) 0%,
+      rgba(10, 15, 26, 0.95) 50%,
+      rgba(10, 15, 26, 0.9) 100%
+    );
+  }
+}
+
+/* Leaflet customizations */
+.leaflet-container {
+  @apply bg-carte-bg-primary;
+  font-family: inherit;
+}
+
+.leaflet-tile-pane {
+  filter: var(--map-tile-filter);
+}
+
+.leaflet-control-zoom {
+  @apply border-none shadow-lg overflow-hidden;
+}
+
+.leaflet-control-zoom a {
+  @apply bg-carte-bg-secondary/90 text-carte-text-primary border-carte-border-subtle backdrop-blur-sm;
+  @apply hover:bg-carte-bg-tertiary hover:text-carte-text-accent;
+  @apply transition-colors duration-200;
+}
+
+.leaflet-control-zoom a:first-child {
+  @apply rounded-t-lg border-b;
+}
+
+.leaflet-control-zoom a:last-child {
+  @apply rounded-b-lg;
+}
+
+.leaflet-control-attribution {
+  @apply bg-carte-bg-secondary/80 text-carte-text-muted text-2xs backdrop-blur-sm;
+}
+
+.leaflet-control-attribution a {
+  @apply text-carte-text-secondary hover:text-carte-text-accent;
+}
+
+.leaflet-popup-content-wrapper {
+  @apply bg-carte-bg-secondary/95 text-carte-text-primary backdrop-blur-xl rounded-xl shadow-xl border border-carte-border-subtle;
+}
+
+.leaflet-popup-tip {
+  @apply bg-carte-bg-secondary/95;
+}
+
+.leaflet-popup-close-button {
+  @apply text-carte-text-secondary hover:text-carte-text-primary;
+}

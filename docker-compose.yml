@@ -1,0 +1,85 @@
+version: "3.9"
+
+services:
+  # Frontend - Next.js
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend/src:/app/src:ro
+      - ./frontend/public:/app/public:ro
+    depends_on:
+      - backend
+    networks:
+      - carto-network
+
+  # Backend - FastAPI
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=true
+      - HOST=0.0.0.0
+      - PORT=8000
+      # Uncomment when database is ready
+      # - DATABASE_URL=postgresql+asyncpg://carto:carto@db:5432/carto_vivabilite
+      # - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ./backend/app:/app/app:ro
+    networks:
+      - carto-network
+    # Uncomment when database is ready
+    # depends_on:
+    #   - db
+    #   - redis
+
+  # PostgreSQL Database (placeholder - uncomment when ready)
+  # db:
+  #   image: postgis/postgis:16-3.4
+  #   environment:
+  #     POSTGRES_USER: carto
+  #     POSTGRES_PASSWORD: carto
+  #     POSTGRES_DB: carto_vivabilite
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - carto-network
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U carto -d carto_vivabilite"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  # Redis Cache (placeholder - uncomment when ready)
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - carto-network
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+networks:
+  carto-network:
+    driver: bridge
+
+# Uncomment when database is ready
+# volumes:
+#   postgres_data:
+#   redis_data:
